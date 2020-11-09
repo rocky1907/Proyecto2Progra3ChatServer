@@ -3,6 +3,7 @@ package chatServer;
 import chatProtocol.User;
 import chatProtocol.IService;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Service implements IService{
@@ -16,12 +17,18 @@ public class Service implements IService{
     
     Server srv;
     Map<String,User> users;
-
+    UserDao dao;
+    
     public Service() {        
         users =  new HashMap();
-        users.put("jperez", new User("jperez","111","Juan"));
-        users.put("mreyes", new User("mreyes","222","Maria"));
-        users.put("parias", new User("parias","333","Pedro"));                
+        dao = new UserDao();
+        List<User> list = dao.findAll();
+        for(int i=0;i<list.size();i++){
+            users.put(list.get(i).getNombre(),new User(list.get(i).getId(),list.get(i).getClave(),list.get(i).getNombre()));
+        }
+//        users.put("jperez", new User("jperez","111","Juan"));
+//        users.put("mreyes", new User("mreyes","222","Maria"));
+//        users.put("parias", new User("parias","333","Pedro"));                
     }
     
     public void setSever(Server srv){
