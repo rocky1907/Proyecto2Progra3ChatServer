@@ -10,6 +10,7 @@ import chatProtocol.User;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collections;
+import java.util.Iterator;
 
 public class Server {
     ServerSocket srv;
@@ -40,9 +41,9 @@ public class Server {
                         out.writeInt(Protocol.ERROR_NO_ERROR);
                         out.writeObject(user);
                         out.flush();
-                        Worker worker = new Worker(skt,in,out,user); 
-                        workers.add(worker);                      
-                        worker.start();                            
+                        Worker worker = new Worker(skt,in,out,user);
+                        workers.add(worker);                        
+                        worker.start();
                     } catch (Exception ex) {
                        out.writeInt(Protocol.ERROR_LOGIN);
                        out.flush();
@@ -56,9 +57,13 @@ public class Server {
     }
     
     public void deliver(String message){
-        for(Worker wk:workers){
-          wk.deliver(message);
-        }        
+        workers.stream().filter(wk -> ("111".equals(wk.getUser().getId()))).forEachOrdered(wk -> {
+            wk.deliver(message);
+            System.out.println("Holasssss");
+        }); 
+//        for(Worker wk:workers){
+//          wk.deliver(message);
+//        }   
     } 
     
     public void remove(User u){
@@ -69,6 +74,15 @@ public class Server {
                 break;
             }
         }
+    }
+    
+    public Worker findByUser(String us){
+        for (Worker worker : workers) {
+            if(worker.getUser().getId().equals(us)){
+                return worker;
+            }
+        }
+        return null;
     }
     
 }

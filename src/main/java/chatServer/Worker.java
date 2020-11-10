@@ -21,13 +21,13 @@ public class Worker {
         this.user=user;
     }
 
-    boolean continuar;    
+    boolean continuar;   
     public void start(){
         try {
             System.out.println("Worker atendiendo peticiones...");
             Thread t = new Thread(new Runnable(){
                 public void run(){
-                    listen();
+                  listen();
                 }
             });
             continuar = true;
@@ -40,13 +40,26 @@ public class Worker {
         continuar=false;
     }
     
+    public void listenByUser(){
+        continuar=true;
+    }
+    
+    public User getUser(){
+        return user;
+    }
+    
     public void listen(){
         int method;
         while (continuar) {
             try {
                 method = in.readInt();
                 switch(method){
-                //case Protocol.LOGIN: done on accept
+                case Protocol.LOGIN: //done on accept
+                    try {
+                        Service.instance().login(user);
+                    } catch (Exception ex) {}
+                    start();
+                    break;  
                 case Protocol.LOGOUT:
                     try {
                         Service.instance().logout(user);

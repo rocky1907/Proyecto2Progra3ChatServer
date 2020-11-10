@@ -44,10 +44,15 @@ public class Service implements IService{
         User result=users.get(u.getId());
         if(result==null)  throw new Exception("User does not exist");
         if(!result.getClave().equals(u.getClave()))throw new Exception("User does not exist");
+        result.conect=true;
         return result;
     } 
 
     public void logout(User p) throws Exception{
         srv.remove(p);
     }    
+
+//    public boolean serch(String data) {
+//        return dao.findByID(data).size()!=0;
+//    }
 }

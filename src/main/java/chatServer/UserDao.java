@@ -92,6 +92,19 @@ public class UserDao {
         } catch (SQLException ex) { }
         return r;
     }
+      public List<User> findByID(String id){
+        List<User> r= new ArrayList<>();
+        String sql="select * from usuario where nombre like ?";
+        try {        
+            PreparedStatement stm = Database.instance().prepareStatement(sql);
+            stm.setString(1, "%"+id+"%");   
+            ResultSet rs =  Database.instance().executeQuery(stm); 
+            while (rs.next()) {
+                r.add(from(rs));
+            }
+        } catch (SQLException ex) { }
+        return r;
+    }
     
     public User from (ResultSet rs){
         try {
