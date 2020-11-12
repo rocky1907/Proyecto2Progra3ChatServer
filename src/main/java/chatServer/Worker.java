@@ -70,7 +70,9 @@ public class Worker {
                     String message=null;
                     try {
                         message = (String)in.readObject();
-                        Service.instance().post(user.getId()+": "+message);
+                        String id = (String)in.readObject();
+                        Service.instance().post(user.getId()+"->"+message,id);
+                        Service.instance().post(user.getId()+"->"+message,user.getId());
                     } catch (ClassNotFoundException ex) {}
                     break;                     
                 }

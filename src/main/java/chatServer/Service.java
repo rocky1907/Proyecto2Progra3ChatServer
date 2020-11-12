@@ -35,8 +35,8 @@ public class Service implements IService{
         this.srv=srv;
     }
     
-    public void post(String m){
-        srv.deliver(m);
+    public void post(String m,String id){
+        srv.deliver(m,id);
         // TODO if the receiver is not active, store it temporarily
     }
     

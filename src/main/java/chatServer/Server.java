@@ -56,10 +56,9 @@ public class Server {
         }
     }
     
-    public void deliver(String message){
-        workers.stream().filter(wk -> ("111".equals(wk.getUser().getId()))).forEachOrdered(wk -> {
+    public void deliver(String message,String id){
+        workers.stream().filter(wk -> (id.equals(wk.getUser().getId()))).forEachOrdered(wk -> {
             wk.deliver(message);
-            System.out.println("Holasssss");
         }); 
 //        for(Worker wk:workers){
 //          wk.deliver(message);
