@@ -5,6 +5,7 @@ import chatProtocol.IService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JOptionPane;
 
 public class Service implements IService{
     private static IService theInstance;
@@ -45,11 +46,14 @@ public class Service implements IService{
         if(result==null)  throw new Exception("User does not exist");
         if(!result.getClave().equals(u.getClave()))throw new Exception("User does not exist");
         result.conect=true;
+        srv.mostrarLogin(result.getId());
         return result;
     } 
 
     public void logout(User p) throws Exception{
+        String x = p.getId();
         srv.remove(p);
+        srv.mostrarLogout(x);
     }    
 
 //    public boolean serch(String data) {

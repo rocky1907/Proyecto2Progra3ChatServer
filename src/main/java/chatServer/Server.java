@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collections;
 import java.util.Iterator;
+import javax.swing.JOptionPane;
 
 public class Server {
     ServerSocket srv;
@@ -42,7 +43,7 @@ public class Server {
                         out.writeObject(user);
                         out.flush();
                         Worker worker = new Worker(skt,in,out,user);
-                        workers.add(worker);                        
+                        workers.add(worker);  
                         worker.start();
                     } catch (Exception ex) {
                        out.writeInt(Protocol.ERROR_LOGIN);
@@ -82,6 +83,18 @@ public class Server {
             }
         }
         return null;
+    }
+    public void mostrarLogout(String s){
+        for (int i = 0; i < workers.size(); i++) {
+            JOptionPane.showMessageDialog(null, "El usuario "+s+" se ha desconectado");
+        }
+    }
+    public void mostrarLogin(String s){
+        for (int i = 0; i < workers.size(); i++) {
+            if(workers.get(i).getUser().conect==true){
+                JOptionPane.showMessageDialog(null, "El usuario "+s+" se ha conectado");
+            }   
+        }
     }
     
 }

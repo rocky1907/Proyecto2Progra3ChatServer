@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import chatProtocol.IService;
 import java.net.Socket;
+import javax.swing.JOptionPane;
 
 public class Worker {
     Socket skt;
@@ -20,14 +21,14 @@ public class Worker {
         this.out=out;
         this.user=user;
     }
-
+    boolean mensajeMostrado;
     boolean continuar;   
     public void start(){
         try {
-            System.out.println("Worker atendiendo peticiones...");
+            System.out.println("Worker atendiendo peticiones..."); 
             Thread t = new Thread(new Runnable(){
                 public void run(){
-                  listen();
+                    listen();
                 }
             });
             continuar = true;
@@ -62,6 +63,7 @@ public class Worker {
                     break;  
                 case Protocol.LOGOUT:
                     try {
+                        user.conect=false;
                         Service.instance().logout(user);
                     } catch (Exception ex) {}
                     stop();
@@ -70,9 +72,12 @@ public class Worker {
                     String message=null;
                     try {
                         message = (String)in.readObject();
-                        String id = (String)in.readObject();
+                        String id = (String)in.readObject();  
+                        System.out.println("Id "+id);
+                        System.out.println("User Id "+user.getId());
                         Service.instance().post(user.getId()+"->"+message,id);
-                        Service.instance().post(user.getId()+"->"+message,user.getId());
+                        Service.instance().post(user.getId()+"-->"+message,user.getId());  
+
                     } catch (ClassNotFoundException ex) {}
                     break;                     
                 }
